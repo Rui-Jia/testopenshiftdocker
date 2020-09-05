@@ -25,7 +25,7 @@ public class UserController {
             produces = {"application/json", "application/xml"})
     public ResponseEntity insertNewUser(@RequestBody User u) {
         long id = us.insertNewUser(u);
-        URI uri = URI.create("/productSuggestions/" + id);
+        URI uri = URI.create("/" + id);
         return ResponseEntity.created(uri).body(u);
     }
 
@@ -34,7 +34,7 @@ public class UserController {
             produces = {"application/json", "application/xml"})
     public ResponseEntity<String> updateUserPassword(@PathVariable long id, @RequestParam String oldPassword, @RequestParam String newPassword) {
         long id_returned = us.updateUserPassword(id, oldPassword, newPassword);
-        URI uri = URI.create("/productSuggestions/" + id_returned);
+        URI uri = URI.create("/" + id_returned);
         return ResponseEntity.created(uri).body(newPassword);
     }
 
