@@ -53,7 +53,7 @@ public class UserServiceTests {
         User user = new User(1, "username", "password");
 
         //Expected
-        when(userService.findUserByUserId(anyLong())).thenReturn(user);
+        when(userService.findUserByUserId(eq(1l))).thenReturn(user);
 
         assertEquals(userService.findUserByUserId(1l), user);
 
@@ -64,8 +64,13 @@ public class UserServiceTests {
 //    @Order(3)
     public void getUserById_userDoesNotExist(){
         System.out.println("3");
+        User user = new User(1, "username", "password");
+
+        when(userService.findUserByUserId(eq(1l))).thenReturn(user);
         when(userService.findUserByUserId(anyLong())).thenReturn(null);
-        assertNull(userService.findUserByUserId(5));
+
+        assertNull(userService.findUserByUserId(5l));
+
         verify(userService).findUserByUserId(anyLong());
     }
 
