@@ -15,9 +15,20 @@ public class UserController {
     private UserService us;
 
     //Get Methods
-    @GetMapping(value = "/login")
+    @GetMapping(value = "/users")
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok().body(us.getAllUsers());
+    }
+
+    @GetMapping(value = "/user/{id}")
+    public ResponseEntity<User> getUserByUserId(@PathVariable long id) {
+        User user = us.findUserByUserId(id);
+
+        if(user != null){
+            return ResponseEntity.ok().body(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     //Create new user
@@ -32,10 +43,15 @@ public class UserController {
     //Update user password
     @PutMapping(value = "/user/{id}", consumes = {"application/json", "application/xml"},
             produces = {"application/json", "application/xml"})
-    public ResponseEntity<String> updateUserPassword(@PathVariable long id, @RequestParam String oldPassword, @RequestParam String newPassword) {
+    public ResponseEntity<Long> updateUserPassword(@PathVariable long id, @RequestParam String oldPassword, @RequestParam String newPassword) {
         long id_returned = us.updateUserPassword(id, oldPassword, newPassword);
-        URI uri = URI.create("/" + id_returned);
-        return ResponseEntity.created(uri).body(newPassword);
+        if(id_returned == id) {
+            return ResponseEntity.ok().body(id_returned);
+        } else if(id_returned == -1){
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.badRequest().build(); //should never reach this
+        }
     }
 
     //Delete users

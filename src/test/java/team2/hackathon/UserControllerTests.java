@@ -17,9 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyObject;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class UserControllerTests {
@@ -49,12 +48,25 @@ public class UserControllerTests {
 
     @Test
     public void getUserById_userReturned() {
-//input here
+        User user = new User(1, "username", "password");
+
+        when(userService.findUserByUserId(eq(1l))).thenReturn(user);
+
+        ResponseEntity<User> responseEntity = userController.getUserByUserId(1l);
+
+        assertEquals(responseEntity.getStatusCodeValue(), 200);
     }
 
     @Test
     public void getUserById_userDoesNotExist() {
-//input here
+        User user = new User(1, "username", "password");
+
+        when(userService.findUserByUserId(eq(1l))).thenReturn(user);
+        when(userService.findUserByUserId(anyLong())).thenReturn(null);
+
+        ResponseEntity<User> responseEntity = userController.getUserByUserId(10l);
+
+        assertEquals(responseEntity.getStatusCodeValue(), 404);
     }
 
     @Test
@@ -72,16 +84,61 @@ public class UserControllerTests {
 
     @Test
     public void updateUserPassword_successfulChange() {
-//    input here
+        User user = new User(1, "username", "password");
+
+        when(userService.updateUserPassword(anyLong(), eq("password"), anyString())).thenReturn(user.getUserId());
+
+        ResponseEntity<Long> responseEntity = userController.updateUserPassword(1l, "password", "newPassword");
+
+        assertEquals(responseEntity.getStatusCodeValue(), 200);
     }
 
     @Test
-    public void deleteUser() {
-//   input here
+    public void updateUserPassword_wrongOldPasswordFail(){
+        User user = new User(1, "username", "password");
+
+        when(userService.updateUserPassword(anyLong(), eq("password"), anyString())).thenReturn(user.getUserId());
+        when(userService.updateUserPassword(anyLong(), anyString(), anyString())).thenReturn(-1l);
+
+        ResponseEntity<Long> responseEntity = userController.updateUserPassword(1, "wrongPassword", "newPassword");
+
+        assertEquals(responseEntity.getStatusCodeValue(), 404);
+    }
+
+    @Test
+    public void deleteUser_userDeleted() {
+        User user = new User(1, "username", "password");
+
+        //method will call find user by id. need a user object.
+        when(userService.findUserByUserId(anyLong())).thenReturn(user);
+
+        doNothing().when(userService).deleteUserByUserId(1l);
+        ResponseEntity<String> responseEntity = userController.deleteUser(1l);
+
+        assertEquals(responseEntity.getStatusCodeValue(), 200);
+
+    }
+
+    @Test
+    public void deleteUser_userNotExist() {
+        User user = new User(1, "username", "password");
+
+        //method will call find user by id. need a user object.
+        when(userService.findUserByUserId(user.getUserId())).thenReturn(user);
+        when(userService.findUserByUserId(anyLong())).thenReturn(null);
+
+        doNothing().when(userService).deleteUserByUserId(10l);
+        ResponseEntity<String> responseEntity = userController.deleteUser(10l);
+
+        assertEquals(responseEntity.getStatusCodeValue(), 404);
+
     }
 
     @Test
     public void deleteAllUsers_usersDeleted() {
-//input here
+        doNothing().when(userService).deleteAllUsers();
+        ResponseEntity responseEntity = userController.deleteAllUsers();
+
+        assertEquals(responseEntity.getStatusCodeValue(), 200);
     }
 }
