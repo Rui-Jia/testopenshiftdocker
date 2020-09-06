@@ -14,9 +14,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-//@TestMethodOrder(MethodOrderer.Alphanumeric.class)
 public class UserServiceTests {
-    //    @Mock
     @MockBean
     private UserService userService;
 
@@ -27,7 +25,6 @@ public class UserServiceTests {
     }
 
     @Test
-//    @Order(1)
     public void getAllUsers_allUsersReturned(){
         System.out.println("1");
         User user = new User(1, "username", "password");
@@ -45,7 +42,6 @@ public class UserServiceTests {
     }
 
     @Test
-//    @Order(2)
     public void getUserById_userReturned(){
         System.out.println("2");
 
@@ -61,7 +57,6 @@ public class UserServiceTests {
     }
 
     @Test
-//    @Order(3)
     public void getUserById_userDoesNotExist(){
         System.out.println("3");
         User user = new User(1, "username", "password");
@@ -75,7 +70,6 @@ public class UserServiceTests {
     }
 
     @Test
-//    @Order(4)
     public void insertNewUser_userInserted(){
         System.out.println("4");
 
@@ -90,7 +84,6 @@ public class UserServiceTests {
     }
 
     @Test
-//    @Order(5)
     public void updateUserPassword_successfulChange(){
         System.out.println("5");
 
@@ -105,7 +98,6 @@ public class UserServiceTests {
 
 
     @Test
-//    @Order(6)
     public void updateUserPassword_wrongOldPasswordFail(){
         System.out.println("6");
 
@@ -121,7 +113,6 @@ public class UserServiceTests {
     }
 
     @Test
-//    @Order(7)
     public void deleteUser_userDeleted(){
         System.out.println("7");
 
@@ -132,7 +123,6 @@ public class UserServiceTests {
     }
 
     @Test
-//    @Order(8)
     public void deleteAllUsers_usersDeleted(){
         System.out.println("8");
 

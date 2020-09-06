@@ -3,7 +3,6 @@ package team2.hackathon;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
-import javax.annotation.processing.Generated;
 
 public class User {
 
