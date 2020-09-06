@@ -1,5 +1,6 @@
 package team2.hackathon;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,12 +15,14 @@ import java.util.HashMap;
 public class YahooRestClient {
 
     private RestTemplate restTemplate = new RestTemplate();
-    private HttpHeaders headers = YahooApiBuilder.getHeaders(new HttpHeaders());
+
+    @Autowired
+    private YahooApiBuilder apiBuilder;
 
     public String getSummary() {
         String uri = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-summary?region=US&lang=en";
 
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
+        HttpEntity<String> entity = new HttpEntity<String>(apiBuilder.getHeaders(new HttpHeaders()));
 
         ParameterizedTypeReference<String> responseType =
                 new ParameterizedTypeReference<String>() {};
@@ -33,7 +36,7 @@ public class YahooRestClient {
     public String getMovers() {
         String uri = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-movers?region=US&lang=en";
 
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
+        HttpEntity<String> entity = new HttpEntity<String>(apiBuilder.getHeaders(new HttpHeaders()));
 
         ParameterizedTypeReference<String> responseType =
                 new ParameterizedTypeReference<String>() {};
@@ -47,7 +50,7 @@ public class YahooRestClient {
     public String getTrendingTickers() {
         String uri = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-trending-tickers?region=US";
 
-        final HttpEntity<String> entity = new HttpEntity<String>(headers);
+        HttpEntity<String> entity = new HttpEntity<String>(apiBuilder.getHeaders(new HttpHeaders()));
 
         ParameterizedTypeReference<String> responseType =
                 new ParameterizedTypeReference<String>() {};

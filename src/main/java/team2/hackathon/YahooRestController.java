@@ -18,7 +18,6 @@ public class YahooRestController {
 
     @GetMapping(value="/getSummary")
     public ResponseEntity<String> getYahooSummary(@RequestHeader("Authorization") long id) {
-        System.out.println("USER ID: " + id);
         if(validateUser(id) == false) {
             return ResponseEntity.status(400).body(null);
         }
