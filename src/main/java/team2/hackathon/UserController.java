@@ -41,8 +41,7 @@ public class UserController {
     }
 
     //Update user password
-    @PutMapping(value = "/user/{id}", consumes = {"application/json", "application/xml"},
-            produces = {"application/json", "application/xml"})
+    @PutMapping(value = "/user/{id}")
     public ResponseEntity<Long> updateUserPassword(@PathVariable long id, @RequestParam String oldPassword, @RequestParam String newPassword) {
         long id_returned = us.updateUserPassword(id, oldPassword, newPassword);
         if(id_returned == id) {
